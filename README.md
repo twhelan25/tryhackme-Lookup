@@ -36,3 +36,18 @@ Target IP: This is a placeholder for the target IP address you want to scan. In 
 -oN
 
 Output in Normal Format: This option saves the scan results in a plain text file format. After -oN, specify a filename where you want to store the scan.
+
+![nmap](https://github.com/user-attachments/assets/aa56659a-06a8-4529-92e0-43f9d8b2263b)
+
+This scan reveals two open ports: 22, and 80. Let's check out the Apache webserver on port 80.
+
+![trouble](https://github.com/user-attachments/assets/a27b70c4-574b-4235-ac56-7e669e835b9f)
+
+The url populates as lookup.thm but the site can't be reached. Let's append the ip and lookup.thm to our /etc/hosts file.
+
+![etc_hosts](https://github.com/user-attachments/assets/4461e87f-c2c9-42a1-8f4a-0dc73e7d113f)
+
+Now, when we refresh the page, we are presented with a login page:
+
+![login](https://github.com/user-attachments/assets/041b52b3-515b-4b6f-90e8-869505aad06c)
+
