@@ -3,7 +3,7 @@
 
 # tryhackme-Lookup
 
-This is a walkthrough for the tryhackme CTF White Lookup. I will not provide any flags or passwords as this is intended to be used as a guide. 
+This is a walkthrough for the tryhackme CTF Lookup. I will not provide any flags or passwords as this is intended to be used as a guide. 
 
 ## Scanning/Reconnaissance
 
@@ -35,4 +35,4 @@ $ip
 Target IP: This is a placeholder for the target IP address you want to scan. In practice, replace $ip with the actual IP of the machine you are targeting.
 -oN
 
-Output in Normal Format: This option saves the scan results in a plain text file format. After -oN, specify a filename where you want to store th
+Output in Normal Format: This option saves the scan results in a plain text file format. After -oN, specify a filename where you want to store the scan.
