@@ -133,3 +133,25 @@ I spent some time exploring the site and looking throug the files. I tried to ss
 We have some good matches here. I then went back to the site and clicked the ? icon, and it showed that the specific version number is a match:
 
 ![elfinder_ver](https://github.com/user-attachments/assets/c96222fa-0252-4cde-a3e1-5d95cf17b4a0)
+
+We can search for elfinder on msfconsole to find the php connector exploit:
+
+![msfconsole](https://github.com/user-attachments/assets/c78d7e3a-2de6-411c-b2cb-ce86cca7743f)
+
+Make sure to set your rhosts and vhosts setting and epxloit:
+
+![payloads](https://github.com/user-attachments/assets/af70441f-975c-4ada-a7ae-d7da6218866e)
+
+There's not much we have permissions for in the home/think directory:
+
+![home](https://github.com/user-attachments/assets/80a9ed92-a922-43dd-a93e-274f930baf21)
+
+I did a find search for file with /4000 permissions.
+
+The file /usr/sbin/pwm is not usual.
+
+![find](https://github.com/user-attachments/assets/b1df5246-7453-4545-a257-8c9eb558fafe)
+
+I did some investigation of pwm:
+
+![pwm](https://github.com/user-attachments/assets/1174418b-a088-44a9-8c4f-ff37ca193ebe)
