@@ -146,6 +146,8 @@ There's not much we have permissions for in the home/think directory:
 
 ![home](https://github.com/user-attachments/assets/80a9ed92-a922-43dd-a93e-274f930baf21)
 
+## Privilege Escalation
+
 I did a find search for file with /4000 permissions.
 
 The file /usr/sbin/pwm is not usual.
@@ -155,3 +157,10 @@ The file /usr/sbin/pwm is not usual.
 I did some investigation of pwm:
 
 ![pwm](https://github.com/user-attachments/assets/1174418b-a088-44a9-8c4f-ff37ca193ebe)
+
+As we can see, this file will be very useful for privilege escalation. The SUID and SGID bits are set: -rwsr-sr-x indicates that when executed, this programs runs with the privileges of the owner, which is root, along with the privileges of the file's group, which is also root. We also see by the timestamp that it's a recent modification or addition. We can also file by the ouput of he file command that the binary is not stipped, meaning that it retains debugging symbols. After running the file and seeing what it does, we see that it extracts a the username and id, and looks for a file named .passwords in the user think's home directory. Since we are not user think, this operation fails. We can get a more indepth view of this by running the strings command on it:
+
+![strings](https://github.com/user-attachments/assets/6ba55d8d-7129-4122-96c5-1004d8ef9a41)
+
+This output shows that this file uses dynamic linking and libraries like libc.so.6. The functions of fopen, perror and popen show that the program is running file operations and executing shell commands. This indicates the potential for command injection. We also see that the program attempts to access /home/%s/.passwords, exposing that it is relying on predictable file paths and names. 
+
