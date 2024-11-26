@@ -162,5 +162,56 @@ As we can see, this file will be very useful for privilege escalation. The SUID 
 
 ![strings](https://github.com/user-attachments/assets/6ba55d8d-7129-4122-96c5-1004d8ef9a41)
 
-This output shows that this file uses dynamic linking and libraries like libc.so.6. The functions of fopen, perror and popen show that the program is running file operations and executing shell commands. This indicates the potential for command injection. We also see that the program attempts to access /home/%s/.passwords, exposing that it is relying on predictable file paths and names. 
+This output shows that this file uses dynamic linking and libraries like libc.so.6. The functions of fopen, perror and popen show that the program is running file operations and executing shell commands. This indicates the potential for command injection. We also see that the program attempts to access /home/%s/.passwords, exposing that it is relying on predictable file paths and names.
 
+The first thing we should do is cd /tmp because we have write access to the /tmp directory.
+Then we will run this command to write our own version of the id command:
+``` bash
+echo 'echo "uid=1000(think)"' > id
+```
+``` bash
+chmod +x id
+```
+Now, we will manipulate the path to look in the tmp directory, so when the id command is run, it will run our version of it, as user think:
+``` bash
+export PATH=/tmp:$PATH
+```
+And when we execute $PATH, we see that it now starts at /tmp, so when we execute id it shows the output for think. Here is a screenshot demonstration:
+
+![exploit_path](https://github.com/user-attachments/assets/b19765bd-e546-41be-87c6-bf3b6f1dcf8d)
+
+And now that the path has been manipulated we can run the pwm command and it will fully execute the .passwords file, which we will now copy and save as passwords.txt in the /tmp dictory.
+
+![execute_pwm](https://github.com/user-attachments/assets/f7aaa446-d915-4e9e-ac60-e294db800331)
+
+Now, we have the passwords but we stil don't know which one will let us switch users to think. This is were a tool called suBF.sh will help us. This stands for switch user brute force. Just google suBF.sh and we can download it onto our attack box, and transfer to the target box using the python http server. 
+
+
+![suBF sh](https://github.com/user-attachments/assets/d72b54a2-19dc-4d25-99f2-4c004019aedb)
+
+Now, we just need to execute the suBF.sh like so:
+
+![think_password](https://github.com/user-attachments/assets/b9819728-7633-4957-9124-20f6d7b76990)
+
+And now we can ssh onto the target as think and grab the user flag.
+
+![user txt](https://github.com/user-attachments/assets/02ab260b-34c2-4a6f-a233-25a033367e59)
+
+We can also use this password to run sudo -l as think:
+
+![sudo -l](https://github.com/user-attachments/assets/584a0bca-594d-49f7-8ef5-8bf05a1138c4)
+
+Let's search for look on gtfobins.github.io:
+
+![gtfo](https://github.com/user-attachments/assets/453b110f-204e-461b-9a8c-4b59bd38d425)
+
+My first though was to use this to read and copy the id_rsa key for root.
+
+![id_rsa](https://github.com/user-attachments/assets/c449c4cb-5ff0-4809-907c-cc5ffb8e6353)
+
+We will then copy it into our own file and name it id_rsa. Change permissions to 600 and ssh as root onto the target.
+
+![root txt](https://github.com/user-attachments/assets/9af947a4-50dd-442e-b950-38048e6ec737)
+
+
+I hope you enjoyed this CTF!
