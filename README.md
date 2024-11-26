@@ -112,3 +112,24 @@ Then ran this hydra command:
 hydra -l jose -P /usr/share/wordlists/rockyou.txt lookup.thm http-post-form "/login.php:username=^USER^&password=^PASS^:Wrong password. Please try again." -IV -t 64
 ```
 I quickly reveals jose's simple password. We will now log into the login panel.
+
+We get another error after logging in:
+
+![hosts_error](https://github.com/user-attachments/assets/927d3725-9ade-4199-be44-caaddfb55e9b)
+
+So we need to add files.lookup.thm to our /etc/hosts file again:
+
+![hosts](https://github.com/user-attachments/assets/38348797-e2f1-4415-a6d4-53f3c6f3c77b)
+
+Now we see this elFinder site:
+
+![files](https://github.com/user-attachments/assets/6b239e83-5da2-4db5-a7e1-81cbe6c3b49f)
+
+I spent some time exploring the site and looking throug the files. I tried to ssh onto the system using some of the credentials but nothing worked. So, my next though was to look up this elfinder with searchsploit:
+
+
+![searchsploit](https://github.com/user-attachments/assets/738a3998-2adc-4903-925f-ab70783bd603)
+
+We have some good matches here. I then went back to the site and clicked the ? icon, and it showed that the specific version number is a match:
+
+![elfinder_ver](https://github.com/user-attachments/assets/c96222fa-0252-4cde-a3e1-5d95cf17b4a0)
